@@ -1,0 +1,2212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#1e3c72">
+<title>Sameer Bags CRM</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+* {
+    margin: 0; padding: 0; box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+:root {
+    --primary: #1e3c72;
+    --primary-light: #2a5298;
+    --bg: #f0f4fa;
+    --card: #ffffff;
+    --text: #0b1e3a;
+    --text-muted: #6b7f99;
+    --border: #e2eaf3;
+    --success: #10b981;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+    --whatsapp: #25d366;
+    --facebook: #1877f2;
+    --insta: #e1306c;
+    --excel: #1d6f42;
+    --shadow: 0 4px 16px rgba(30, 60, 114, 0.08);
+}
+
+html, body { height: 100%; overflow: hidden; }
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.5;
+    overscroll-behavior: none;
+}
+
+.app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    max-width: 500px;
+    margin: 0 auto;
+    background: var(--bg);
+    position: relative;
+    box-shadow: 0 0 40px rgba(0,0,0,0.08);
+}
+
+/* HEADER */
+.app-header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    color: white;
+    padding: 16px 20px 20px;
+    border-radius: 0 0 24px 24px;
+    box-shadow: 0 6px 20px rgba(30, 60, 114, 0.25);
+    z-index: 10;
+    flex-shrink: 0;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.brand { display: flex; align-items: center; gap: 12px; }
+
+.brand-logo {
+    width: 42px; height: 42px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.25);
+}
+
+.brand-text h1 { font-size: 17px; font-weight: 700; letter-spacing: -0.3px; }
+.brand-text p { font-size: 11px; opacity: 0.85; font-weight: 500; margin-top: 1px; }
+
+.header-btn {
+    width: 40px; height: 40px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+    font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+}
+.header-btn:active { transform: scale(0.92); background: rgba(255,255,255,0.25); }
+
+.search-bar {
+    background: rgba(255,255,255,0.18);
+    border-radius: 14px;
+    padding: 10px 16px;
+    display: flex; align-items: center; gap: 10px;
+    border: 1px solid rgba(255,255,255,0.2);
+    backdrop-filter: blur(10px);
+}
+.search-bar i { color: rgba(255,255,255,0.8); font-size: 14px; }
+.search-bar input {
+    border: none; background: transparent; outline: none;
+    color: white; font-size: 14px; width: 100%; font-family: inherit;
+}
+.search-bar input::placeholder { color: rgba(255,255,255,0.65); }
+
+/* TAB CONTENT */
+.tab-content {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: 90px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    display: none;
+}
+.tab-content.active { display: block; }
+.tab-content::-webkit-scrollbar { display: none; }
+
+/* DASHBOARD STATS */
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 16px 16px 0;
+}
+
+.stat-card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 14px 16px;
+    box-shadow: var(--shadow);
+    display: flex; align-items: center;
+    gap: 12px;
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    border-radius: 0 4px 4px 0;
+}
+
+.stat-card.total::before { background: #3b82f6; }
+.stat-card.active::before { background: #10b981; }
+.stat-card.vip::before { background: #f59e0b; }
+.stat-card.inactive::before { background: #94a3b8; }
+
+.stat-icon {
+    width: 42px; height: 42px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px; color: white; flex-shrink: 0;
+}
+
+.stat-card.total .stat-icon { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+.stat-card.active .stat-icon { background: linear-gradient(135deg, #10b981, #059669); }
+.stat-card.vip .stat-icon { background: linear-gradient(135deg, #f59e0b, #d97706); }
+.stat-card.inactive .stat-icon { background: linear-gradient(135deg, #94a3b8, #64748b); }
+
+.stat-info { flex: 1; min-width: 0; }
+.stat-info h3 {
+    font-size: 22px; font-weight: 800;
+    color: var(--text); line-height: 1.1;
+    letter-spacing: -0.5px;
+}
+.stat-info p {
+    font-size: 11px; color: var(--text-muted);
+    font-weight: 600; margin-top: 3px;
+    text-transform: uppercase; letter-spacing: 0.3px;
+}
+
+/* LOCATION SUMMARY */
+.location-summary {
+    margin: 16px 16px 0;
+    background: white;
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    overflow: hidden;
+}
+
+.location-summary-header {
+    padding: 14px 18px;
+    background: linear-gradient(135deg, #eef3fb, #f9fcff);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+}
+
+.location-summary-header h3 {
+    font-size: 14px; font-weight: 700; color: var(--text);
+    display: flex; align-items: center; gap: 8px;
+}
+.location-summary-header h3 i { color: var(--primary-light); }
+.location-summary-header .count-badge {
+    background: var(--primary); color: white;
+    padding: 3px 10px; border-radius: 20px;
+    font-size: 11px; font-weight: 700;
+}
+
+.location-list { padding: 8px 0; max-height: 260px; overflow-y: auto; }
+
+.location-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 18px; cursor: pointer;
+}
+.location-row:active { background: #f0f6ff; }
+
+.loc-icon {
+    width: 32px; height: 32px;
+    border-radius: 10px;
+    background: #eef3fb;
+    color: var(--primary);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; flex-shrink: 0;
+}
+
+.loc-name {
+    flex: 1; font-size: 14px; font-weight: 600; color: var(--text);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+.loc-count {
+    background: #f0f6ff; color: var(--primary);
+    padding: 3px 10px; border-radius: 12px;
+    font-size: 12px; font-weight: 700; flex-shrink: 0;
+}
+
+.loc-bar {
+    width: 60px; height: 6px; border-radius: 3px;
+    background: #eef3fb; overflow: hidden; flex-shrink: 0;
+}
+
+.loc-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--primary-light));
+    border-radius: 3px; transition: width 0.4s ease;
+}
+
+/* FILTERS */
+.filter-section { padding: 14px 16px 0; }
+
+.filter-label {
+    font-size: 10.5px; font-weight: 800;
+    color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 0.8px;
+    padding: 0 4px 8px;
+    display: flex; align-items: center; gap: 6px;
+}
+.filter-label i { color: var(--primary-light); font-size: 11px; }
+
+.filter-scroll {
+    display: flex; gap: 8px; overflow-x: auto;
+    scrollbar-width: none; padding-bottom: 6px;
+}
+.filter-scroll::-webkit-scrollbar { display: none; }
+
+.chip {
+    padding: 8px 14px; border-radius: 30px;
+    background: white; color: var(--text-muted);
+    font-size: 12.5px; font-weight: 600;
+    white-space: nowrap; cursor: pointer;
+    border: 1.5px solid var(--border);
+    transition: 0.2s; flex-shrink: 0;
+    display: flex; align-items: center; gap: 6px;
+}
+
+.chip .chip-count {
+    background: #eef3fb; color: var(--primary);
+    font-size: 10px; padding: 1px 7px;
+    border-radius: 10px; font-weight: 700;
+}
+
+.chip.active {
+    background: var(--primary); color: white;
+    border-color: var(--primary);
+    box-shadow: 0 4px 12px rgba(30, 60, 114, 0.3);
+}
+.chip.active .chip-count {
+    background: rgba(255,255,255,0.25); color: white;
+}
+.chip:active { transform: scale(0.95); }
+
+/* LIST */
+.list-area { padding: 12px 16px 0; }
+
+.section-label {
+    font-size: 12px; font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 0.8px;
+    padding: 8px 4px 10px;
+    display: flex; justify-content: space-between; align-items: center;
+}
+.section-label .count {
+    background: var(--primary); color: white;
+    padding: 2px 10px; border-radius: 20px; font-size: 11px;
+}
+
+.customer-card {
+    background: var(--card);
+    border-radius: 18px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.card-top {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 12px; cursor: pointer;
+}
+
+.avatar {
+    width: 48px; height: 48px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; color: white; font-size: 16px;
+    flex-shrink: 0; letter-spacing: 0.5px;
+}
+
+.card-info { flex: 1; min-width: 0; }
+.card-info h3 {
+    font-size: 15px; font-weight: 700; color: var(--text);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.card-info .sub-line {
+    font-size: 12px; color: var(--text-muted);
+    display: flex; align-items: center; gap: 5px;
+    margin-top: 3px; flex-wrap: wrap;
+}
+
+.source-tag {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 10px; font-weight: 700;
+    padding: 3px 9px; border-radius: 10px;
+    text-transform: uppercase; letter-spacing: 0.3px;
+    margin-left: 4px;
+}
+.source-offline { background: #f1f5f9; color: #475569; }
+.source-facebook { background: #dbeafe; color: #1e40af; }
+.source-indiamart { background: #fff3e0; color: #b45309; }
+.source-instagram { background: #fce7f3; color: #be185d; }
+.source-justdial { background: #e0e7ff; color: #3730a3; }
+
+.card-status {
+    display: flex; flex-direction: column;
+    align-items: flex-end; gap: 4px; flex-shrink: 0;
+}
+
+.badge {
+    padding: 4px 10px; border-radius: 20px;
+    font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.3px;
+}
+.badge-active { background: #dcfce7; color: #166534; }
+.badge-vip { background: #fef3c7; color: #92400e; }
+.badge-new { background: #dbeafe; color: #1e40af; }
+.badge-inactive { background: #fee2e2; color: #991b1b; }
+
+.days-tag {
+    font-size: 10px; font-weight: 700;
+    padding: 3px 8px; border-radius: 8px;
+    background: #f0f6ff; color: #475569;
+    display: inline-flex; align-items: center; gap: 3px;
+}
+.days-tag.warn { background: #fef3c7; color: #92400e; }
+.days-tag.danger { background: #fee2e2; color: #991b1b; }
+
+.card-actions {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+    padding-top: 12px; border-top: 1px solid var(--border);
+}
+.card-actions.with-reminder { grid-template-columns: 1fr 1fr 1fr; }
+
+.quick-btn {
+    padding: 10px 12px; border-radius: 12px;
+    border: none; font-size: 12.5px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    gap: 6px; cursor: pointer; transition: 0.2s;
+    font-family: inherit; text-decoration: none;
+}
+.quick-btn:active { transform: scale(0.96); }
+
+.quick-call { background: #eff6ff; color: #1d4ed8; border: 1.5px solid #dbeafe; }
+.quick-wa { background: #ecfdf5; color: #047857; border: 1.5px solid #d1fae5; }
+.quick-remind {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: white; border: 1.5px solid #f59e0b;
+    box-shadow: 0 3px 8px rgba(245, 158, 11, 0.3);
+}
+
+/* Empty */
+.empty-state {
+    text-align: center; padding: 60px 20px; color: var(--text-muted);
+}
+.empty-state i {
+    font-size: 56px; color: #c7d5e8; margin-bottom: 16px;
+}
+.empty-state h3 { font-size: 16px; color: var(--text); margin-bottom: 6px; }
+.empty-state p { font-size: 13px; margin-bottom: 20px; }
+
+/* FAB */
+.fab {
+    position: absolute; bottom: 90px; right: 20px;
+    width: 58px; height: 58px; border-radius: 18px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: white; border: none; font-size: 22px;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 10px 24px rgba(30, 60, 114, 0.4);
+    cursor: pointer; z-index: 50;
+}
+.fab:active { transform: scale(0.9); }
+
+/* TAB BAR */
+.tab-bar {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    max-width: 500px; margin: 0 auto;
+    background: white; border-top: 1px solid var(--border);
+    display: flex; z-index: 60;
+    box-shadow: 0 -6px 20px rgba(30, 60, 114, 0.08);
+    padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+.tab-item {
+    flex: 1; padding: 10px 6px 12px;
+    display: flex; flex-direction: column;
+    align-items: center; gap: 3px;
+    cursor: pointer; color: var(--text-muted);
+    border: none; background: transparent;
+    font-family: inherit; position: relative;
+}
+
+.tab-item .tab-icon { font-size: 18px; transition: 0.2s; }
+.tab-item .tab-label { font-size: 10.5px; font-weight: 700; }
+
+.tab-item.active { color: var(--primary); }
+.tab-item.active .tab-icon { transform: translateY(-1px); }
+.tab-item.active::before {
+    content: ''; position: absolute; top: 0;
+    width: 40px; height: 3px;
+    border-radius: 0 0 4px 4px; background: var(--primary);
+}
+
+/* SHEETS */
+.sheet-overlay {
+    position: fixed; inset: 0;
+    background: rgba(11, 30, 58, 0.55);
+    backdrop-filter: blur(4px);
+    opacity: 0; visibility: hidden;
+    transition: 0.3s; z-index: 100;
+}
+.sheet-overlay.active { opacity: 1; visibility: visible; }
+
+.sheet {
+    position: fixed; left: 0; right: 0; bottom: 0;
+    background: white; border-radius: 28px 28px 0 0;
+    max-height: 92vh; max-width: 500px; margin: 0 auto;
+    transform: translateY(100%);
+    transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+    z-index: 101; display: flex; flex-direction: column;
+    box-shadow: 0 -10px 40px rgba(0,0,0,0.2);
+}
+.sheet.active { transform: translateY(0); }
+
+.sheet-handle {
+    width: 40px; height: 4px;
+    background: #d1d9e6; border-radius: 4px;
+    margin: 12px auto 4px; flex-shrink: 0;
+}
+
+.sheet-header {
+    padding: 12px 20px 16px;
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1px solid var(--border); flex-shrink: 0;
+}
+.sheet-header h2 {
+    font-size: 18px; font-weight: 700; color: var(--text);
+    display: flex; align-items: center; gap: 8px;
+}
+.sheet-header h2 i {
+    color: var(--primary); font-size: 16px;
+    background: #edf3ff; padding: 8px; border-radius: 10px;
+}
+
+.sheet-close {
+    width: 36px; height: 36px; border-radius: 12px;
+    background: #f0f4fe; border: none;
+    color: var(--primary); font-size: 16px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+}
+.sheet-close:active { transform: scale(0.9); }
+
+.sheet-body {
+    padding: 20px; overflow-y: auto; flex: 1;
+    -webkit-overflow-scrolling: touch;
+}
+
+.sheet-footer {
+    padding: 16px 20px 24px;
+    display: flex; gap: 10px;
+    border-top: 1px solid var(--border);
+    flex-shrink: 0; background: white;
+}
+
+.sheet-intro {
+    font-size: 13px; color: var(--text-muted);
+    margin-bottom: 16px; line-height: 1.6;
+}
+
+/* Buttons */
+.btn {
+    flex: 1; padding: 14px 20px; border-radius: 14px;
+    border: none; font-size: 15px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    gap: 8px; cursor: pointer; transition: 0.2s;
+    font-family: inherit; text-decoration: none;
+}
+.btn:active { transform: scale(0.97); }
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: white; box-shadow: 0 6px 16px rgba(30, 60, 114, 0.25);
+}
+.btn-outline {
+    background: white; color: var(--text-muted);
+    border: 1.5px solid var(--border);
+    flex: 0 0 auto; padding: 14px 18px;
+}
+.btn-danger { background: var(--danger); color: white; }
+.btn-whatsapp { background: var(--whatsapp); color: white; }
+
+/* FORM */
+.form-group { margin-bottom: 16px; }
+
+.form-group label {
+    display: block; font-size: 12px; font-weight: 700;
+    color: var(--text); margin-bottom: 8px;
+    text-transform: uppercase; letter-spacing: 0.3px;
+}
+.form-group label span { color: var(--danger); }
+
+.form-group input,
+.form-group select {
+    width: 100%; padding: 14px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 14px; font-size: 15px;
+    outline: none; transition: 0.2s;
+    font-family: inherit; background: #fbfdff; color: var(--text);
+}
+.form-group input:focus,
+.form-group select:focus {
+    border-color: var(--primary); background: white;
+    box-shadow: 0 0 0 4px rgba(42, 82, 152, 0.08);
+}
+
+.form-group .help-text {
+    font-size: 11.5px; color: var(--text-muted);
+    margin-top: 6px; line-height: 1.4;
+    display: flex; align-items: center; gap: 5px;
+}
+.form-group .help-text i { color: var(--primary-light); }
+
+.form-row {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+}
+
+.cat-grid, .source-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+}
+
+.cat-option, .source-option {
+    padding: 12px 10px; border-radius: 14px;
+    border: 1.5px solid var(--border);
+    background: #fbfdff; cursor: pointer;
+    transition: 0.2s; display: flex; align-items: center;
+    gap: 8px; font-size: 12.5px; font-weight: 600;
+    color: var(--text);
+}
+.cat-option .cat-emoji { font-size: 16px; }
+
+.cat-option.active, .source-option.active {
+    background: #eef3fb; border-color: var(--primary);
+    color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.08);
+}
+
+.source-option .src-icon {
+    width: 26px; height: 26px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; color: white; flex-shrink: 0;
+}
+.src-offline .src-icon { background: linear-gradient(135deg, #64748b, #475569); }
+.src-facebook .src-icon { background: linear-gradient(135deg, #1877f2, #0d5bc7); }
+.src-indiamart .src-icon { background: linear-gradient(135deg, #f59e0b, #b45309); }
+.src-instagram .src-icon { background: linear-gradient(135deg, #ec4899, #be185d); }
+.src-justdial .src-icon { background: linear-gradient(135deg, #3b82f6, #1e40af); }
+
+/* DETAIL */
+.detail-hero {
+    text-align: center; padding: 10px 20px 20px;
+    border-bottom: 1px solid var(--border);
+}
+
+.detail-hero .avatar-lg {
+    width: 80px; height: 80px; border-radius: 24px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; color: white; font-size: 28px;
+    margin: 0 auto 14px;
+    box-shadow: 0 10px 24px rgba(30, 60, 114, 0.25);
+}
+
+.detail-hero h2 { font-size: 22px; font-weight: 700; color: var(--text); }
+
+.detail-hero .cat-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: #eef3fb; color: var(--primary);
+    padding: 6px 14px; border-radius: 30px;
+    font-size: 12px; font-weight: 700; margin-top: 8px;
+}
+
+.inactive-alert {
+    margin: 16px 20px 0;
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    border: 1.5px solid #fbbf24;
+    border-radius: 16px; padding: 14px 16px;
+    display: flex; gap: 12px; align-items: flex-start;
+}
+.inactive-alert i {
+    color: #92400e; font-size: 20px;
+    flex-shrink: 0; margin-top: 2px;
+}
+.inactive-alert-text h4 {
+    font-size: 13.5px; font-weight: 800;
+    color: #92400e; margin-bottom: 3px;
+}
+.inactive-alert-text p {
+    font-size: 12.5px; color: #78350f; line-height: 1.5;
+}
+
+.detail-quick-actions {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 10px; padding: 16px 20px 0;
+}
+
+.detail-action-btn {
+    padding: 16px 12px; border-radius: 16px;
+    border: none; font-size: 14px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    gap: 8px; cursor: pointer; transition: 0.2s;
+    font-family: inherit; text-decoration: none;
+}
+.detail-action-btn:active { transform: scale(0.96); }
+
+.detail-call {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+    box-shadow: 0 6px 16px rgba(59, 130, 246, 0.35);
+}
+.detail-wa {
+    background: linear-gradient(135deg, #25d366, #128c7e);
+    color: white;
+    box-shadow: 0 6px 16px rgba(37, 211, 102, 0.35);
+}
+
+.detail-remind-btn {
+    grid-column: 1 / -1;
+    padding: 16px; border-radius: 16px;
+    border: none; font-size: 14.5px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    gap: 8px; cursor: pointer; font-family: inherit;
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: white;
+    box-shadow: 0 6px 16px rgba(245, 158, 11, 0.35);
+    margin-top: 10px;
+}
+.detail-remind-btn:active { transform: scale(0.97); }
+
+.detail-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 12px; padding: 20px;
+}
+
+.detail-box {
+    background: #f9fcff; border: 1px solid var(--border);
+    border-radius: 14px; padding: 14px;
+}
+.detail-box .label {
+    font-size: 10px; color: var(--text-muted);
+    font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.4px; margin-bottom: 6px;
+    display: flex; align-items: center; gap: 5px;
+}
+.detail-box .label i { color: var(--primary-light); font-size: 11px; }
+.detail-box .value {
+    font-size: 14px; font-weight: 700;
+    color: var(--text); word-break: break-word;
+}
+.detail-box.full { grid-column: 1 / -1; }
+
+/* LANGUAGE MODAL */
+.lang-modal {
+    position: fixed; inset: 0;
+    background: rgba(11, 30, 58, 0.65);
+    backdrop-filter: blur(6px);
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px; opacity: 0; visibility: hidden;
+    transition: 0.25s; z-index: 250;
+}
+.lang-modal.active { opacity: 1; visibility: visible; }
+
+.lang-box {
+    background: white; border-radius: 24px;
+    padding: 24px 20px 20px;
+    max-width: 380px; width: 100%;
+    transform: scale(0.92);
+    transition: 0.25s; max-height: 90vh;
+    overflow-y: auto;
+}
+.lang-modal.active .lang-box { transform: scale(1); }
+
+.lang-header { text-align: center; margin-bottom: 20px; }
+.lang-header .lang-icon {
+    width: 60px; height: 60px; border-radius: 20px;
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px; margin: 0 auto 12px;
+    box-shadow: 0 10px 24px rgba(245, 158, 11, 0.3);
+}
+.lang-header h3 {
+    font-size: 18px; font-weight: 700;
+    color: var(--text); margin-bottom: 4px;
+}
+.lang-header p { font-size: 13px; color: var(--text-muted); }
+
+.lang-options {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 10px; margin-bottom: 18px;
+}
+
+.lang-btn {
+    padding: 20px 12px; border-radius: 18px;
+    border: 2px solid var(--border);
+    background: #fbfdff; cursor: pointer;
+    transition: 0.2s; font-family: inherit;
+    display: flex; flex-direction: column;
+    align-items: center; gap: 8px;
+}
+.lang-btn:active { transform: scale(0.96); }
+.lang-btn.selected {
+    border-color: var(--primary); background: #eef3fb;
+    box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.1);
+}
+.lang-btn .lang-flag { font-size: 28px; }
+.lang-btn .lang-name {
+    font-size: 15px; font-weight: 800; color: var(--text);
+}
+.lang-btn.selected .lang-name { color: var(--primary); }
+
+.lang-preview {
+    background: #f0f6ff; border: 1px solid #d0dcf0;
+    border-radius: 14px; padding: 14px;
+    margin-bottom: 16px; max-height: 200px;
+    overflow-y: auto;
+}
+.lang-preview-title {
+    font-size: 11px; font-weight: 800;
+    color: var(--primary);
+    text-transform: uppercase; letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    display: flex; align-items: center; gap: 6px;
+}
+.lang-preview-text {
+    font-size: 13px; color: var(--text);
+    line-height: 1.6; white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.lang-actions { display: flex; gap: 10px; }
+
+/* MENU */
+.menu-item {
+    display: flex; align-items: center; gap: 14px;
+    padding: 16px; background: #f9fcff;
+    border: 1px solid var(--border);
+    border-radius: 16px; margin-bottom: 10px;
+    cursor: pointer; transition: 0.2s;
+}
+.menu-item:active { transform: scale(0.98); background: #f0f6ff; }
+
+.menu-icon {
+    width: 44px; height: 44px; border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; color: white; flex-shrink: 0;
+}
+.mi-blue { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+.mi-green { background: linear-gradient(135deg, #10b981, #059669); }
+.mi-excel { background: linear-gradient(135deg, #1d6f42, #166534); }
+.mi-red { background: linear-gradient(135deg, #ef4444, #dc2626); }
+.mi-orange { background: linear-gradient(135deg, #f59e0b, #d97706); }
+
+.menu-text { flex: 1; }
+.menu-text h4 { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+.menu-text p { font-size: 12px; color: var(--text-muted); }
+.menu-arrow { color: #c7d5e8; font-size: 14px; }
+
+.menu-section-title {
+    font-size: 10.5px; font-weight: 800;
+    color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 0.8px;
+    padding: 6px 4px 10px;
+    display: flex; align-items: center; gap: 6px;
+}
+.menu-section-title i { color: var(--primary-light); font-size: 11px; }
+
+/* TOAST */
+.toast {
+    position: fixed; bottom: 110px; left: 50%;
+    transform: translateX(-50%) translateY(150%);
+    background: #0b1e3a; color: white;
+    padding: 14px 22px; border-radius: 14px;
+    font-size: 14px; font-weight: 600;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+    display: flex; align-items: center; gap: 10px;
+    transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+    z-index: 400; max-width: 90%;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+.toast i { font-size: 16px; }
+.toast.success i { color: #4ade80; }
+.toast.error i { color: #f87171; }
+
+/* CONFIRM */
+.confirm-overlay {
+    position: fixed; inset: 0;
+    background: rgba(11, 30, 58, 0.6);
+    backdrop-filter: blur(4px);
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px; opacity: 0; visibility: hidden;
+    transition: 0.25s; z-index: 300;
+}
+.confirm-overlay.active { opacity: 1; visibility: visible; }
+
+.confirm-box {
+    background: white; border-radius: 24px;
+    padding: 28px 24px 20px;
+    max-width: 340px; width: 100%;
+    text-align: center; transform: scale(0.9);
+    transition: 0.25s;
+}
+.confirm-overlay.active .confirm-box { transform: scale(1); }
+
+.confirm-icon {
+    width: 60px; height: 60px; border-radius: 20px;
+    background: #fee2e2; color: var(--danger);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px; margin: 0 auto 16px;
+}
+
+.confirm-box h3 { font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+.confirm-box p { font-size: 14px; color: var(--text-muted); margin-bottom: 22px; line-height: 1.5; }
+.confirm-actions { display: flex; gap: 10px; }
+.confirm-actions .btn { padding: 12px; font-size: 14px; }
+
+@media (min-width: 520px) {
+    body { background: linear-gradient(135deg, #e8eefb 0%, #dbe7f7 100%); }
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+    <div class="app-header">
+        <div class="header-top">
+            <div class="brand">
+                <div class="brand-logo"><i class="fas fa-shopping-bag"></i></div>
+                <div class="brand-text">
+                    <h1>Sameer Bags</h1>
+                    <p>Customer CRM</p>
+                </div>
+            </div>
+            <button class="header-btn" onclick="openBackupMenu()" title="Database">
+                <i class="fas fa-database"></i>
+            </button>
+        </div>
+        <div class="search-bar">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" placeholder="Naam, phone, shop search karein...">
+        </div>
+    </div>
+
+    <div class="tab-content active" id="tab-all">
+        <div class="stats-grid">
+            <div class="stat-card total">
+                <div class="stat-icon"><i class="fas fa-users"></i></div>
+                <div class="stat-info"><h3 id="statTotal">0</h3><p>Total</p></div>
+            </div>
+            <div class="stat-card active">
+                <div class="stat-icon"><i class="fas fa-user-check"></i></div>
+                <div class="stat-info"><h3 id="statActive">0</h3><p>Active</p></div>
+            </div>
+            <div class="stat-card vip">
+                <div class="stat-icon"><i class="fas fa-crown"></i></div>
+                <div class="stat-info"><h3 id="statVIP">0</h3><p>VIP</p></div>
+            </div>
+            <div class="stat-card inactive">
+                <div class="stat-icon"><i class="fas fa-user-slash"></i></div>
+                <div class="stat-info"><h3 id="statInactive">0</h3><p>Inactive</p></div>
+            </div>
+        </div>
+
+        <div class="location-summary">
+            <div class="location-summary-header">
+                <h3><i class="fas fa-map-marker-alt"></i> Location Wise</h3>
+                <span class="count-badge" id="locTotalCities">0 Cities</span>
+            </div>
+            <div class="location-list" id="locationList"></div>
+        </div>
+
+        <div class="filter-section">
+            <div class="filter-label"><i class="fas fa-tags"></i> Category</div>
+            <div class="filter-scroll" id="categoryBar"></div>
+        </div>
+
+        <div class="filter-section">
+            <div class="filter-label"><i class="fas fa-globe"></i> Order Source</div>
+            <div class="filter-scroll" id="sourceBar"></div>
+        </div>
+
+        <div class="list-area" id="listAreaAll"></div>
+    </div>
+
+    <div class="tab-content" id="tab-location">
+        <div class="list-area" id="listAreaLocation" style="padding-top:16px"></div>
+    </div>
+
+    <div class="tab-content" id="tab-online">
+        <div class="filter-section">
+            <div class="filter-label"><i class="fas fa-globe"></i> Online Sources</div>
+            <div class="filter-scroll" id="onlineSourceBar"></div>
+        </div>
+        <div class="list-area" id="listAreaOnline"></div>
+    </div>
+
+    <div class="tab-content" id="tab-offline">
+        <div class="list-area" id="listAreaOffline" style="padding-top:16px"></div>
+    </div>
+
+    <button class="fab" onclick="openForm()">
+        <i class="fas fa-plus"></i>
+    </button>
+
+    <div class="tab-bar">
+        <button class="tab-item active" data-tab="all" onclick="switchTab('all')">
+            <i class="fas fa-users tab-icon"></i>
+            <span class="tab-label">All</span>
+        </button>
+        <button class="tab-item" data-tab="location" onclick="switchTab('location')">
+            <i class="fas fa-map-marker-alt tab-icon"></i>
+            <span class="tab-label">Location</span>
+        </button>
+        <button class="tab-item" data-tab="online" onclick="switchTab('online')">
+            <i class="fas fa-globe tab-icon"></i>
+            <span class="tab-label">Online</span>
+        </button>
+        <button class="tab-item" data-tab="offline" onclick="switchTab('offline')">
+            <i class="fas fa-store tab-icon"></i>
+            <span class="tab-label">Offline</span>
+        </button>
+    </div>
+</div>
+
+<!-- FORM SHEET -->
+<div class="sheet-overlay" id="formOverlay" onclick="if(event.target===this)closeForm()"></div>
+<div class="sheet" id="formSheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-header">
+        <h2 id="formTitle"><i class="fas fa-user-plus"></i> Naya Customer</h2>
+        <button class="sheet-close" onclick="closeForm()"><i class="fas fa-times"></i></button>
+    </div>
+    <form id="customerForm" onsubmit="saveCustomer(event)" style="display:contents">
+        <div class="sheet-body">
+            <input type="hidden" id="editId">
+
+            <div class="form-group">
+                <label>Customer Name <span>*</span></label>
+                <input type="text" id="cName" required placeholder="e.g. Aarav Kapoor" autocomplete="off">
+            </div>
+
+            <div class="form-group">
+                <label>Category <span>*</span></label>
+                <div class="cat-grid" id="catGrid"></div>
+                <input type="hidden" id="cCategory">
+            </div>
+
+            <div class="form-group">
+                <label>Order Source <span>*</span></label>
+                <div class="source-grid" id="sourceGrid"></div>
+                <input type="hidden" id="cSource">
+            </div>
+
+            <div class="form-group">
+                <label>Shop Name <span>*</span></label>
+                <input type="text" id="cShop" required placeholder="e.g. Sharma Bag House" autocomplete="off">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Phone <span>*</span></label>
+                    <input type="tel" id="cPhone" required placeholder="9876543210" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label>City / Location <span>*</span></label>
+                    <input type="text" id="cCity" required placeholder="Mumbai" autocomplete="off" list="cityList">
+                    <datalist id="cityList"></datalist>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Last Order Date <span>*</span></label>
+                <input type="date" id="cLastOrderDate" required>
+                <div class="help-text">
+                    <i class="fas fa-info-circle"></i>
+                    <span>6 mahine se purani date dalne par status auto "Inactive" ho jayega</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Status</label>
+                <select id="cStatus">
+                    <option value="Active">Active</option>
+                    <option value="VIP">VIP</option>
+                    <option value="New">New</option>
+                    <option value="Inactive">Inactive</option>
+                </select>
+                <div class="help-text">
+                    <i class="fas fa-magic"></i>
+                    <span>Auto-calculate hoga Last Order Date ke hisaab se (VIP sirf manual)</span>
+                </div>
+            </div>
+        </div>
+        <div class="sheet-footer">
+            <button type="button" class="btn btn-outline" onclick="closeForm()">
+                <i class="fas fa-times"></i>
+            </button>
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-check"></i> Save Karein
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- DETAIL SHEET -->
+<div class="sheet-overlay" id="detailOverlay" onclick="if(event.target===this)closeDetail()"></div>
+<div class="sheet" id="detailSheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-header">
+        <h2><i class="fas fa-user"></i> Customer Details</h2>
+        <button class="sheet-close" onclick="closeDetail()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="sheet-body" id="detailBody"></div>
+    <div class="sheet-footer" id="detailFooter"></div>
+</div>
+
+<!-- LANGUAGE PICKER MODAL -->
+<div class="lang-modal" id="langModal">
+    <div class="lang-box">
+        <div class="lang-header">
+            <div class="lang-icon"><i class="fas fa-comments"></i></div>
+            <h3>Message Language</h3>
+            <p>Kis bhasha me reminder bhejna hai?</p>
+        </div>
+
+        <div class="lang-options">
+            <button class="lang-btn" id="langHi" onclick="selectLang('hi')">
+                <span class="lang-flag">🇮🇳</span>
+                <span class="lang-name">हिन्दी</span>
+            </button>
+            <button class="lang-btn" id="langMr" onclick="selectLang('mr')">
+                <span class="lang-flag">🚩</span>
+                <span class="lang-name">मराठी</span>
+            </button>
+        </div>
+
+        <div class="lang-preview" id="langPreview" style="display:none">
+            <div class="lang-preview-title">
+                <i class="fas fa-eye"></i> Preview
+            </div>
+            <div class="lang-preview-text" id="langPreviewText"></div>
+        </div>
+
+        <div class="lang-actions">
+            <button class="btn btn-outline" style="flex:1" onclick="closeLangModal()">
+                <i class="fas fa-times"></i> Cancel
+            </button>
+            <button class="btn btn-whatsapp" id="langSendBtn" style="flex:2" disabled onclick="sendReminderWA()">
+                <i class="fab fa-whatsapp"></i> Send
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- BACKUP MENU -->
+<div class="sheet-overlay" id="backupOverlay" onclick="if(event.target===this)closeBackupMenu()"></div>
+<div class="sheet" id="backupSheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-header">
+        <h2><i class="fas fa-database"></i> Database</h2>
+        <button class="sheet-close" onclick="closeBackupMenu()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="sheet-body">
+        <p class="sheet-intro">Data export, backup aur restore ke saare options yahan hain.</p>
+
+        <div class="menu-section-title"><i class="fas fa-file-export"></i> Export Data</div>
+
+        <div class="menu-item" onclick="exportToExcel()">
+            <div class="menu-icon mi-excel"><i class="fas fa-file-excel"></i></div>
+            <div class="menu-text">
+                <h4>Export to Excel</h4>
+                <p>Sab customer data .xls me download karein</p>
+            </div>
+            <i class="fas fa-chevron-right menu-arrow"></i>
+        </div>
+
+        <div class="menu-item" onclick="downloadBackup()">
+            <div class="menu-icon mi-green"><i class="fas fa-download"></i></div>
+            <div class="menu-text">
+                <h4>Backup Download (JSON)</h4>
+                <p>JSON file me pura data save karein</p>
+            </div>
+            <i class="fas fa-chevron-right menu-arrow"></i>
+        </div>
+
+        <div class="menu-item" onclick="copyToClipboard()">
+            <div class="menu-icon mi-orange"><i class="fas fa-copy"></i></div>
+            <div class="menu-text">
+                <h4>Clipboard Me Copy</h4>
+                <p>Text ke roop me data copy karein</p>
+            </div>
+            <i class="fas fa-chevron-right menu-arrow"></i>
+        </div>
+
+        <div class="menu-section-title" style="margin-top:14px"><i class="fas fa-file-import"></i> Restore Data</div>
+
+        <div class="menu-item" onclick="document.getElementById('restoreFile').click()">
+            <div class="menu-icon mi-blue"><i class="fas fa-upload"></i></div>
+            <div class="menu-text">
+                <h4>Restore from JSON</h4>
+                <p>Backup file se data wapas layein</p>
+            </div>
+            <i class="fas fa-chevron-right menu-arrow"></i>
+        </div>
+
+        <div class="menu-section-title" style="margin-top:14px"><i class="fas fa-exclamation-triangle"></i> Danger Zone</div>
+
+        <div class="menu-item" onclick="clearAllData()">
+            <div class="menu-icon mi-red"><i class="fas fa-trash-alt"></i></div>
+            <div class="menu-text">
+                <h4 style="color:var(--danger)">Sab Data Delete Karein</h4>
+                <p>Pura CRM reset karein</p>
+            </div>
+            <i class="fas fa-chevron-right menu-arrow"></i>
+        </div>
+
+        <input type="file" id="restoreFile" accept=".json,application/json" style="display:none" onchange="restoreFromFile(event)">
+    </div>
+    <div class="sheet-footer">
+        <button class="btn btn-outline" style="flex:1" onclick="closeBackupMenu()">
+            <i class="fas fa-times"></i> Band Karein
+        </button>
+    </div>
+</div>
+
+<!-- CONFIRM -->
+<div class="confirm-overlay" id="confirmOverlay">
+    <div class="confirm-box">
+        <div class="confirm-icon"><i class="fas fa-exclamation-triangle"></i></div>
+        <h3 id="confirmTitle">Confirm</h3>
+        <p id="confirmMsg">Kya aap sure hain?</p>
+        <div class="confirm-actions">
+            <button class="btn btn-outline" style="flex:1" onclick="closeConfirm()">Cancel</button>
+            <button class="btn btn-danger" id="confirmBtn" style="flex:1">Haan</button>
+        </div>
+    </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+    <i class="fas fa-check-circle"></i>
+    <span id="toastMsg">Saved!</span>
+</div>
+
+<script>
+/* ============================================================
+   Sameer Bags CRM — v8
+   - WhatsApp message: "Hello" instead of "Namaste" / "Namaskar"
+   - NO 🙏 emoji (baaki sab emoji intact)
+   - Email field removed from form
+   ============================================================ */
+
+const STORAGE_KEY = 'sameer_bags_crm_v8';
+const INACTIVE_MONTHS = 6;
+const SHOP_INFO = {
+    name: 'Sameer Bags',
+    location: 'Chakan, Pune',
+    phone1: '8485861122',
+    phone2: '8485868604'
+};
+
+const CATEGORIES = [
+    { id: 'jewellery',  name: 'Jewellery Shop',    emoji: '💍' },
+    { id: 'garment',    name: 'Garment Shop',      emoji: '👕' },
+    { id: 'mobile',     name: 'Mobile Shop',       emoji: '📱' },
+    { id: 'footwear',   name: 'Footwear Shop',     emoji: '👟' },
+    { id: 'gift',       name: 'Gift Shop',         emoji: '🎁' },
+    { id: 'stationary', name: 'Stationary Shop',   emoji: '✏️' },
+    { id: 'events',     name: 'Events/Exhibition', emoji: '🎪' },
+    { id: 'others',     name: 'Others',            emoji: '📦' }
+];
+
+const SOURCES = [
+    { id: 'offline',   name: 'Offline',    online: false, icon: 'fa-store' },
+    { id: 'facebook',  name: 'Facebook',   online: true,  icon: 'fa-facebook-f' },
+    { id: 'indiamart', name: 'IndiaMart',  online: true,  icon: 'fa-shopping-cart' },
+    { id: 'instagram', name: 'Instagram',  online: true,  icon: 'fa-instagram' },
+    { id: 'justdial',  name: 'Just Dial',  online: true,  icon: 'fa-phone' }
+];
+
+const ONLINE_SOURCES = SOURCES.filter(s => s.online);
+
+let customers = [];
+let currentTab = 'all';
+let activeCategory = 'all';
+let activeSource = 'all';
+let activeOnlineSource = 'all';
+let searchTerm = '';
+let currentDetailId = null;
+let searchTimer = null;
+let confirmCallback = null;
+let reminderCustomerId = null;
+let selectedLang = null;
+
+const today = new Date();
+function daysAgo(n) {
+    const d = new Date(today);
+    d.setDate(d.getDate() - n);
+    return d.toISOString().slice(0, 10);
+}
+function monthsAgo(m) {
+    const d = new Date(today);
+    d.setMonth(d.getMonth() - m);
+    return d.toISOString().slice(0, 10);
+}
+
+const SAMPLE_DATA = [
+    { id: 1, name: "Aarav Kapoor", category: "garment", source: "offline", shop: "Sharma Garments", phone: "9876543210", city: "Mumbai", status: "Active", lastOrderDate: daysAgo(15) },
+    { id: 2, name: "Priya Sharma", category: "jewellery", source: "instagram", shop: "Golden Jewellers", phone: "9812345678", city: "Delhi", status: "VIP", lastOrderDate: daysAgo(45) },
+    { id: 3, name: "Rohan Verma", category: "mobile", source: "indiamart", shop: "Verma Mobile Hub", phone: "9988766554", city: "Bangalore", status: "Active", lastOrderDate: daysAgo(90) },
+    { id: 4, name: "Neha Mehta", category: "gift", source: "justdial", shop: "Gift Gallery", phone: "9765432109", city: "Pune", status: "Inactive", lastOrderDate: monthsAgo(8) },
+    { id: 5, name: "Karan Singh", category: "footwear", source: "offline", shop: "Singh Footwear", phone: "9123456780", city: "Jaipur", status: "Active", lastOrderDate: daysAgo(20) },
+    { id: 6, name: "Sneha Patel", category: "events", source: "facebook", shop: "Rajasthan Expo", phone: "9876500011", city: "Ahmedabad", status: "VIP", lastOrderDate: daysAgo(10) },
+    { id: 7, name: "Vikram Joshi", category: "stationary", source: "indiamart", shop: "Joshi Stationers", phone: "9812300022", city: "Surat", status: "Inactive", lastOrderDate: monthsAgo(7) },
+    { id: 8, name: "Pooja Reddy", category: "jewellery", source: "offline", shop: "Reddy Jewels", phone: "9876511111", city: "Hyderabad", status: "Inactive", lastOrderDate: monthsAgo(9) },
+    { id: 9, name: "Manish Gupta", category: "gift", source: "facebook", shop: "Gupta Gifts", phone: "9812399999", city: "Mumbai", status: "Active", lastOrderDate: daysAgo(60) }
+];
+
+function loadData() {
+    try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) {
+            customers = [...SAMPLE_DATA];
+            saveData();
+        } else {
+            customers = JSON.parse(raw);
+        }
+    } catch (e) {
+        customers = [...SAMPLE_DATA];
+    }
+    autoUpdateStatuses();
+}
+
+function saveData() {
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(customers));
+    } catch (e) {
+        showToast('Save nahi ho paya!', false);
+    }
+}
+
+function monthsBetween(dateStr) {
+    if (!dateStr) return 0;
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return 0;
+    const now = new Date();
+    return (now.getFullYear() - d.getFullYear()) * 12 + (now.getMonth() - d.getMonth());
+}
+
+function autoUpdateStatuses() {
+    let changed = 0;
+    customers.forEach(c => {
+        if (c.status === 'VIP') return;
+        const months = monthsBetween(c.lastOrderDate);
+        if (months >= INACTIVE_MONTHS && c.status !== 'Inactive') {
+            c.status = 'Inactive';
+            changed++;
+        } else if (months < INACTIVE_MONTHS && c.status === 'Inactive') {
+            c.status = 'Active';
+            changed++;
+        }
+    });
+    if (changed > 0) saveData();
+}
+
+function daysSince(dateStr) {
+    if (!dateStr) return null;
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return null;
+    const now = new Date();
+    return Math.floor((now - d) / (1000 * 60 * 60 * 24));
+}
+
+function formatDate(dateStr) {
+    if (!dateStr) return '—';
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return '—';
+    return d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+}
+
+function escapeHtml(str) {
+    if (str == null) return '';
+    return String(str).replace(/[&<>"']/g, m => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    })[m]);
+}
+
+function initials(name) {
+    if (!name) return '?';
+    return name.trim().split(/\s+/).map(n => n[0]).join('').slice(0, 2).toUpperCase();
+}
+
+function getCategoryInfo(id) {
+    return CATEGORIES.find(c => c.id === id) || { id: 'others', name: 'Others', emoji: '📦' };
+}
+function getSourceInfo(id) {
+    return SOURCES.find(s => s.id === id) || SOURCES[0];
+}
+function phoneClean(p) { return (p || '').replace(/\D/g, ''); }
+function waNumber(p) {
+    const n = phoneClean(p);
+    return n.length === 10 ? '91' + n : n;
+}
+
+function getFiltered(list) {
+    const s = searchTerm.trim().toLowerCase();
+    if (!s) return list;
+    return list.filter(c => {
+        const cat = getCategoryInfo(c.category).name.toLowerCase();
+        const src = getSourceInfo(c.source).name.toLowerCase();
+        return (
+            (c.name || '').toLowerCase().includes(s) ||
+            (c.shop || '').toLowerCase().includes(s) ||
+            (c.phone || '').toLowerCase().includes(s) ||
+            (c.city || '').toLowerCase().includes(s) ||
+            cat.includes(s) || src.includes(s)
+        );
+    });
+}
+
+function getAllFiltered() {
+    let list = customers;
+    if (activeCategory !== 'all') list = list.filter(c => c.category === activeCategory);
+    if (activeSource !== 'all') list = list.filter(c => c.source === activeSource);
+    return getFiltered(list);
+}
+function getOnlineFiltered() {
+    let list = customers.filter(c => getSourceInfo(c.source).online);
+    if (activeOnlineSource !== 'all') list = list.filter(c => c.source === activeOnlineSource);
+    return getFiltered(list);
+}
+function getOfflineFiltered() {
+    return getFiltered(customers.filter(c => c.source === 'offline'));
+}
+
+function renderAll() {
+    autoUpdateStatuses();
+    renderStats();
+    renderLocationSummary();
+    renderCategoryBar();
+    renderSourceBar();
+    renderOnlineSourceBar();
+    renderListAll();
+    renderListOnline();
+    renderListOffline();
+    renderLocationTab();
+    renderCityDatalist();
+}
+
+function renderStats() {
+    document.getElementById('statTotal').textContent = customers.length;
+    document.getElementById('statActive').textContent = customers.filter(c => c.status === 'Active').length;
+    document.getElementById('statVIP').textContent = customers.filter(c => c.status === 'VIP').length;
+    document.getElementById('statInactive').textContent = customers.filter(c => c.status === 'Inactive').length;
+}
+
+function getCityCounts(list = customers) {
+    const map = {};
+    list.forEach(c => {
+        const city = (c.city || 'Unknown').trim() || 'Unknown';
+        map[city] = (map[city] || 0) + 1;
+    });
+    return Object.entries(map).sort((a, b) => b[1] - a[1]);
+}
+
+function renderLocationSummary() {
+    const list = document.getElementById('locationList');
+    const counts = getCityCounts();
+    const max = counts.length > 0 ? counts[0][1] : 1;
+    document.getElementById('locTotalCities').textContent = counts.length + ' Cities';
+
+    if (counts.length === 0) {
+        list.innerHTML = `<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:13px;">Koi city nahi</div>`;
+        return;
+    }
+
+    list.innerHTML = counts.slice(0, 15).map(([city, count]) => {
+        const pct = Math.round((count / max) * 100);
+        return `
+            <div class="location-row" onclick="filterByCity('${escapeHtml(city)}')">
+                <div class="loc-icon"><i class="fas fa-map-marker-alt"></i></div>
+                <div class="loc-name">${escapeHtml(city)}</div>
+                <div class="loc-bar"><div class="loc-bar-fill" style="width:${pct}%"></div></div>
+                <div class="loc-count">${count}</div>
+            </div>
+        `;
+    }).join('');
+}
+
+function filterByCity(city) {
+    searchTerm = city;
+    document.getElementById('searchInput').value = city;
+    switchTab('all');
+    renderListAll();
+    showToast(`${city} customers dikh rahe hain`);
+}
+
+function renderCategoryBar() {
+    const bar = document.getElementById('categoryBar');
+    bar.innerHTML = '';
+    const allChip = document.createElement('div');
+    allChip.className = 'chip' + (activeCategory === 'all' ? ' active' : '');
+    allChip.innerHTML = `<i class="fas fa-th-large"></i> All <span class="chip-count">${customers.length}</span>`;
+    allChip.onclick = () => { activeCategory = 'all'; renderAll(); };
+    bar.appendChild(allChip);
+    CATEGORIES.forEach(cat => {
+        const count = customers.filter(c => c.category === cat.id).length;
+        const chip = document.createElement('div');
+        chip.className = 'chip' + (activeCategory === cat.id ? ' active' : '');
+        chip.innerHTML = `<span>${cat.emoji}</span> ${cat.name} <span class="chip-count">${count}</span>`;
+        chip.onclick = () => { activeCategory = cat.id; renderAll(); };
+        bar.appendChild(chip);
+    });
+}
+
+function renderSourceBar() {
+    const bar = document.getElementById('sourceBar');
+    bar.innerHTML = '';
+    const allChip = document.createElement('div');
+    allChip.className = 'chip source' + (activeSource === 'all' ? ' active' : '');
+    allChip.innerHTML = `<i class="fas fa-globe"></i> All <span class="chip-count">${customers.length}</span>`;
+    allChip.onclick = () => { activeSource = 'all'; renderAll(); };
+    bar.appendChild(allChip);
+    SOURCES.forEach(src => {
+        const count = customers.filter(c => c.source === src.id).length;
+        const chip = document.createElement('div');
+        chip.className = 'chip source' + (activeSource === src.id ? ' active' : '');
+        chip.innerHTML = `<i class="fab ${src.icon}" style="font-size:11px"></i> ${src.name} <span class="chip-count">${count}</span>`;
+        chip.onclick = () => { activeSource = src.id; renderAll(); };
+        bar.appendChild(chip);
+    });
+}
+
+function renderOnlineSourceBar() {
+    const bar = document.getElementById('onlineSourceBar');
+    if (!bar) return;
+    bar.innerHTML = '';
+    const onlineList = customers.filter(c => getSourceInfo(c.source).online);
+    const allChip = document.createElement('div');
+    allChip.className = 'chip source' + (activeOnlineSource === 'all' ? ' active' : '');
+    allChip.innerHTML = `<i class="fas fa-globe"></i> All Online <span class="chip-count">${onlineList.length}</span>`;
+    allChip.onclick = () => { activeOnlineSource = 'all'; renderAll(); };
+    bar.appendChild(allChip);
+    ONLINE_SOURCES.forEach(src => {
+        const count = customers.filter(c => c.source === src.id).length;
+        const chip = document.createElement('div');
+        chip.className = 'chip source' + (activeOnlineSource === src.id ? ' active' : '');
+        chip.innerHTML = `<i class="fab ${src.icon}" style="font-size:11px"></i> ${src.name} <span class="chip-count">${count}</span>`;
+        chip.onclick = () => { activeOnlineSource = src.id; renderAll(); };
+        bar.appendChild(chip);
+    });
+}
+
+function renderCards(list) {
+    return list.map(c => {
+        const badge = 'badge-' + (c.status || 'Active').toLowerCase();
+        const cat = getCategoryInfo(c.category);
+        const src = getSourceInfo(c.source);
+        const phone = phoneClean(c.phone);
+        const wa = waNumber(c.phone);
+        const days = daysSince(c.lastOrderDate);
+        const isInactive = c.status === 'Inactive';
+
+        let daysTag = '';
+        if (days !== null) {
+            let cls = 'days-tag';
+            if (days >= 180) cls += ' danger';
+            else if (days >= 120) cls += ' warn';
+            const daysText = days === 0 ? 'Aaj' : days === 1 ? 'Kal' : `${days}d ago`;
+            daysTag = `<span class="${cls}"><i class="fas fa-clock"></i> ${daysText}</span>`;
+        }
+
+        const reminderBtn = isInactive ? `
+            <button class="quick-btn quick-remind" onclick="event.stopPropagation(); openLangPicker(${c.id})">
+                <i class="fas fa-bell"></i> Remind
+            </button>
+        ` : '';
+
+        const actionsClass = isInactive ? 'card-actions with-reminder' : 'card-actions';
+
+        return `
+        <div class="customer-card">
+            <div class="card-top" onclick="openDetail(${c.id})">
+                <div class="avatar">${initials(c.name)}</div>
+                <div class="card-info">
+                    <h3>${escapeHtml(c.name)}</h3>
+                    <div class="sub-line">
+                        ${cat.emoji} ${escapeHtml(cat.name)}
+                        <span class="source-tag source-${c.source}">${escapeHtml(src.name)}</span>
+                        ${daysTag}
+                    </div>
+                </div>
+                <div class="card-status">
+                    <span class="badge ${badge}">${escapeHtml(c.status)}</span>
+                </div>
+            </div>
+            <div class="${actionsClass}">
+                <a href="tel:${phone}" class="quick-btn quick-call" onclick="event.stopPropagation()">
+                    <i class="fas fa-phone"></i> Call
+                </a>
+                <a href="https://wa.me/${wa}" target="_blank" class="quick-btn quick-wa" onclick="event.stopPropagation()">
+                    <i class="fab fa-whatsapp"></i> WhatsApp
+                </a>
+                ${reminderBtn}
+            </div>
+        </div>`;
+    }).join('');
+}
+
+function emptyState(msg, sub) {
+    return `
+        <div class="empty-state">
+            <i class="fas fa-user-slash"></i>
+            <h3>${msg}</h3>
+            <p>${sub}</p>
+            <button class="btn btn-primary" style="max-width:200px;margin:0 auto" onclick="openForm()">
+                <i class="fas fa-plus"></i> Add Customer
+            </button>
+        </div>`;
+}
+
+function renderListAll() {
+    const area = document.getElementById('listAreaAll');
+    const list = getAllFiltered();
+    if (list.length === 0) { area.innerHTML = emptyState('Koi customer nahi mila', 'Naya customer add karein'); return; }
+    const catLabel = activeCategory === 'all' ? 'All' : getCategoryInfo(activeCategory).name;
+    const srcLabel = activeSource === 'all' ? '' : ' · ' + getSourceInfo(activeSource).name;
+    let html = `<div class="section-label"><span>${escapeHtml(catLabel)}${escapeHtml(srcLabel)}</span><span class="count">${list.length}</span></div>`;
+    html += renderCards(list);
+    area.innerHTML = html;
+}
+
+function renderListOnline() {
+    const area = document.getElementById('listAreaOnline');
+    const list = getOnlineFiltered();
+    if (list.length === 0) { area.innerHTML = emptyState('Koi online customer nahi', 'Facebook, IndiaMart, Instagram, Just Dial se aaye customers yahan dikhenge'); return; }
+    const label = activeOnlineSource === 'all' ? 'All Online' : getSourceInfo(activeOnlineSource).name;
+    let html = `<div class="section-label"><span>${escapeHtml(label)}</span><span class="count">${list.length}</span></div>`;
+    html += renderCards(list);
+    area.innerHTML = html;
+}
+
+function renderListOffline() {
+    const area = document.getElementById('listAreaOffline');
+    const list = getOfflineFiltered();
+    if (list.length === 0) { area.innerHTML = emptyState('Koi offline customer nahi', 'Shop pe direct aaye customers yahan dikhenge'); return; }
+    let html = `<div class="section-label"><span>Offline (Shop Direct)</span><span class="count">${list.length}</span></div>`;
+    html += renderCards(list);
+    area.innerHTML = html;
+}
+
+function renderLocationTab() {
+    const area = document.getElementById('listAreaLocation');
+    const counts = getCityCounts();
+    if (counts.length === 0) { area.innerHTML = emptyState('Koi city nahi', 'Customer add karein city ke saath'); return; }
+    let html = `<div class="section-label"><span>Location Wise Customers</span><span class="count">${counts.length} Cities</span></div>`;
+    counts.forEach(([city, count]) => {
+        const cityCustomers = customers.filter(c => (c.city || 'Unknown') === city);
+        const max = counts[0][1];
+        const pct = Math.round((count / max) * 100);
+        html += `
+        <div style="background:white;border-radius:18px;padding:14px 16px;margin-bottom:10px;box-shadow:var(--shadow);border:1px solid var(--border);">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+                <div class="avatar" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed);"><i class="fas fa-map-marker-alt"></i></div>
+                <div style="flex:1;min-width:0;">
+                    <h3 style="font-size:15px;font-weight:700;color:var(--text);">${escapeHtml(city)}</h3>
+                    <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">${count} customer${count > 1 ? 's' : ''}</div>
+                </div>
+                <div style="background:#f0f6ff;color:var(--primary);padding:4px 12px;border-radius:20px;font-size:13px;font-weight:800;">${count}</div>
+            </div>
+            <div style="height:6px;border-radius:3px;background:#eef3fb;overflow:hidden;margin-bottom:12px;">
+                <div style="height:100%;width:${pct}%;background:linear-gradient(90deg,#8b5cf6,#7c3aed);border-radius:3px;"></div>
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                ${cityCustomers.slice(0, 4).map(c => `
+                    <div style="display:flex;align-items:center;gap:6px;background:#f9fcff;border:1px solid var(--border);padding:6px 10px;border-radius:12px;font-size:12px;font-weight:600;cursor:pointer;" onclick="openDetail(${c.id})">
+                        <span style="width:20px;height:20px;border-radius:6px;background:linear-gradient(135deg,var(--primary),var(--primary-light));color:white;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;">${initials(c.name)}</span>
+                        ${escapeHtml(c.name.split(' ')[0])}
+                    </div>
+                `).join('')}
+                ${cityCustomers.length > 4 ? `<div style="padding:6px 10px;font-size:12px;color:var(--text-muted);font-weight:600;">+${cityCustomers.length - 4} more</div>` : ''}
+            </div>
+        </div>`;
+    });
+    area.innerHTML = html;
+}
+
+function renderCityDatalist() {
+    const dl = document.getElementById('cityList');
+    const cities = [...new Set(customers.map(c => c.city).filter(Boolean))].sort();
+    dl.innerHTML = cities.map(c => `<option value="${escapeHtml(c)}">`).join('');
+}
+
+function switchTab(tab) {
+    currentTab = tab;
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tab-item').forEach(el => el.classList.remove('active'));
+    document.getElementById('tab-' + tab).classList.add('active');
+    document.querySelector(`.tab-item[data-tab="${tab}"]`).classList.add('active');
+    const content = document.getElementById('tab-' + tab);
+    if (content) content.scrollTop = 0;
+}
+
+function openForm(id = null) {
+    const form = document.getElementById('customerForm');
+    form.reset();
+    document.getElementById('editId').value = '';
+    document.getElementById('cStatus').value = 'Active';
+    document.getElementById('cCategory').value = '';
+    document.getElementById('cSource').value = '';
+    document.getElementById('cLastOrderDate').value = new Date().toISOString().slice(0, 10);
+
+    const editCustomer = id ? customers.find(x => x.id === id) : null;
+    renderCategoryGrid(editCustomer?.category);
+    renderSourceGrid(editCustomer?.source);
+
+    if (editCustomer) {
+        document.getElementById('formTitle').innerHTML = '<i class="fas fa-user-edit"></i> Edit Customer';
+        document.getElementById('editId').value = editCustomer.id;
+        document.getElementById('cName').value = editCustomer.name || '';
+        document.getElementById('cShop').value = editCustomer.shop || '';
+        document.getElementById('cPhone').value = editCustomer.phone || '';
+        document.getElementById('cCity').value = editCustomer.city || '';
+        document.getElementById('cStatus').value = editCustomer.status || 'Active';
+        document.getElementById('cLastOrderDate').value = editCustomer.lastOrderDate || '';
+    } else {
+        document.getElementById('formTitle').innerHTML = '<i class="fas fa-user-plus"></i> Naya Customer';
+    }
+
+    document.getElementById('formOverlay').classList.add('active');
+    document.getElementById('formSheet').classList.add('active');
+    setTimeout(() => document.getElementById('cName').focus(), 350);
+}
+
+function renderCategoryGrid(selectedCat) {
+    const grid = document.getElementById('catGrid');
+    grid.innerHTML = CATEGORIES.map(cat => `
+        <div class="cat-option ${selectedCat === cat.id ? 'active' : ''}"
+             data-cat="${cat.id}" onclick="selectCategory('${cat.id}')">
+            <span class="cat-emoji">${cat.emoji}</span>
+            <span>${cat.name}</span>
+        </div>
+    `).join('');
+    if (selectedCat) document.getElementById('cCategory').value = selectedCat;
+}
+
+function renderSourceGrid(selectedSrc) {
+    const grid = document.getElementById('sourceGrid');
+    grid.innerHTML = SOURCES.map(src => `
+        <div class="source-option src-${src.id} ${selectedSrc === src.id ? 'active' : ''}"
+             data-src="${src.id}" onclick="selectSource('${src.id}')">
+            <span class="src-icon"><i class="fab ${src.icon}"></i></span>
+            <span>${src.name}</span>
+        </div>
+    `).join('');
+    if (selectedSrc) document.getElementById('cSource').value = selectedSrc;
+}
+
+function selectCategory(catId) {
+    document.getElementById('cCategory').value = catId;
+    document.querySelectorAll('.cat-option').forEach(el => {
+        el.classList.toggle('active', el.dataset.cat === catId);
+    });
+}
+
+function selectSource(srcId) {
+    document.getElementById('cSource').value = srcId;
+    document.querySelectorAll('.source-option').forEach(el => {
+        el.classList.toggle('active', el.dataset.src === srcId);
+    });
+}
+
+function closeForm() {
+    document.getElementById('formOverlay').classList.remove('active');
+    document.getElementById('formSheet').classList.remove('active');
+}
+
+function saveCustomer(e) {
+    e.preventDefault();
+    const editId = document.getElementById('editId').value;
+    const category = document.getElementById('cCategory').value;
+    const source = document.getElementById('cSource').value;
+    const lastOrderDate = document.getElementById('cLastOrderDate').value;
+    let manualStatus = document.getElementById('cStatus').value;
+
+    const data = {
+        name: document.getElementById('cName').value.trim(),
+        category, source,
+        shop: document.getElementById('cShop').value.trim(),
+        phone: document.getElementById('cPhone').value.trim(),
+        city: document.getElementById('cCity').value.trim(),
+        lastOrderDate,
+        status: manualStatus
+    };
+
+    if (!data.name || !data.shop || !data.phone) {
+        showToast('Name, Shop, Phone zaroori hai', false); return;
+    }
+    if (!data.category) { showToast('Category select karein', false); return; }
+    if (!data.source) { showToast('Order Source select karein', false); return; }
+    if (!data.city) { showToast('City zaroori hai', false); return; }
+    if (!data.lastOrderDate) { showToast('Last Order Date zaroori hai', false); return; }
+
+    if (data.status !== 'VIP') {
+        const months = monthsBetween(data.lastOrderDate);
+        if (months >= INACTIVE_MONTHS) data.status = 'Inactive';
+        else if (data.status === 'Inactive') data.status = 'Active';
+    }
+
+    if (editId) {
+        const idx = customers.findIndex(c => c.id == editId);
+        if (idx > -1) customers[idx] = { ...customers[idx], ...data };
+        showToast('Customer update ho gaya!');
+    } else {
+        data.id = Date.now();
+        data.createdAt = Date.now();
+        customers.unshift(data);
+        showToast('Naya customer add ho gaya!');
+    }
+
+    saveData();
+    closeForm();
+    renderAll();
+}
+
+function openDetail(id) {
+    const c = customers.find(x => x.id === id);
+    if (!c) return;
+    currentDetailId = id;
+
+    const badge = 'badge-' + (c.status || 'Active').toLowerCase();
+    const cat = getCategoryInfo(c.category);
+    const src = getSourceInfo(c.source);
+    const body = document.getElementById('detailBody');
+    const phone = phoneClean(c.phone);
+    const wa = waNumber(c.phone);
+    const days = daysSince(c.lastOrderDate);
+    const isInactive = c.status === 'Inactive';
+
+    const inactiveAlert = isInactive ? `
+        <div class="inactive-alert">
+            <i class="fas fa-exclamation-triangle"></i>
+            <div class="inactive-alert-text">
+                <h4>Inactive Customer</h4>
+                <p>${days !== null ? `${days} din se koi order nahi aaya.` : ''} Reminder bhejein taaki customer wapas order kare!</p>
+            </div>
+        </div>
+    ` : '';
+
+    const reminderBtn = isInactive ? `
+        <button class="detail-remind-btn" onclick="openLangPicker(${c.id})">
+            <i class="fas fa-bell"></i> WhatsApp Reminder Bhejein
+        </button>
+    ` : '';
+
+    body.innerHTML = `
+        <div class="detail-hero">
+            <div class="avatar-lg">${initials(c.name)}</div>
+            <h2>${escapeHtml(c.name)}</h2>
+            <div class="cat-badge">${cat.emoji} ${escapeHtml(cat.name)}</div>
+            <div style="margin-top:12px"><span class="badge ${badge}">${escapeHtml(c.status)}</span></div>
+        </div>
+
+        ${inactiveAlert}
+
+        <div class="detail-quick-actions">
+            <a href="tel:${phone}" class="detail-action-btn detail-call">
+                <i class="fas fa-phone"></i> Call
+            </a>
+            <a href="https://wa.me/${wa}" target="_blank" class="detail-action-btn detail-wa">
+                <i class="fab fa-whatsapp"></i> WhatsApp
+            </a>
+            ${reminderBtn}
+        </div>
+
+        <div class="detail-grid">
+            <div class="detail-box full">
+                <div class="label"><i class="fas fa-store"></i> Shop Name</div>
+                <div class="value">${escapeHtml(c.shop || '—')}</div>
+            </div>
+            <div class="detail-box">
+                <div class="label"><i class="fas fa-globe"></i> Order Source</div>
+                <div class="value">${escapeHtml(src.name)}</div>
+            </div>
+            <div class="detail-box">
+                <div class="label"><i class="fas fa-map-marker-alt"></i> City</div>
+                <div class="value">${escapeHtml(c.city || '—')}</div>
+            </div>
+            <div class="detail-box full">
+                <div class="label"><i class="fas fa-phone"></i> Phone</div>
+                <div class="value">${escapeHtml(c.phone || '—')}</div>
+            </div>
+            <div class="detail-box full">
+                <div class="label"><i class="fas fa-calendar-check"></i> Last Order Date</div>
+                <div class="value">${formatDate(c.lastOrderDate)}${days !== null ? ` · ${days} din pehle` : ''}</div>
+            </div>
+        </div>
+    `;
+
+    document.getElementById('detailFooter').innerHTML = `
+        <button class="btn btn-outline" onclick="closeDetail()">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+        <button class="btn btn-outline" style="color:var(--primary);border-color:#d0dcf0" onclick="editFromDetail()">
+            <i class="fas fa-edit"></i> Edit
+        </button>
+        <button class="btn btn-danger" onclick="deleteFromDetail()">
+            <i class="fas fa-trash"></i> Delete
+        </button>
+    `;
+
+    document.getElementById('detailOverlay').classList.add('active');
+    document.getElementById('detailSheet').classList.add('active');
+}
+
+function closeDetail() {
+    document.getElementById('detailOverlay').classList.remove('active');
+    document.getElementById('detailSheet').classList.remove('active');
+    currentDetailId = null;
+}
+
+function editFromDetail() {
+    const id = currentDetailId;
+    closeDetail();
+    setTimeout(() => openForm(id), 250);
+}
+
+function deleteFromDetail() {
+    if (!currentDetailId) return;
+    const c = customers.find(x => x.id === currentDetailId);
+    if (!c) return;
+    askConfirm(
+        'Customer Delete?',
+        `"${c.name}" ka data hamesha ke liye delete ho jayega.`,
+        () => {
+            customers = customers.filter(x => x.id !== currentDetailId);
+            saveData();
+            closeDetail();
+            renderAll();
+            showToast('Customer delete ho gaya!');
+        }
+    );
+}
+
+/* LANGUAGE PICKER */
+function openLangPicker(id) {
+    reminderCustomerId = id;
+    selectedLang = null;
+    document.getElementById('langHi').classList.remove('selected');
+    document.getElementById('langMr').classList.remove('selected');
+    document.getElementById('langPreview').style.display = 'none';
+    document.getElementById('langSendBtn').disabled = true;
+    document.getElementById('langModal').classList.add('active');
+}
+
+function closeLangModal() {
+    document.getElementById('langModal').classList.remove('active');
+    reminderCustomerId = null;
+    selectedLang = null;
+}
+
+/* Reminder messages — "Hello" + baaki saare emoji intact (sirf 🙏 hataya) */
+function getReminderMessage(lang, customer) {
+    const name = customer.name || 'Customer';
+    const shop = customer.shop || '';
+    const sign = `\n\n*${SHOP_INFO.name}*\n📍 ${SHOP_INFO.location}\n📞 Mob. ${SHOP_INFO.phone1} / ${SHOP_INFO.phone2}`;
+
+    if (lang === 'hi') {
+        return `Hello ${name} ji,
+
+${shop ? `Aapki dukan "${shop}" ke liye ` : ''}hamari taraf se ek zaroori update hai.
+
+Hamne dekha ki aapne pichli baar hamse order kiya tha, lekin ab kafi samay ho gaya hai.
+
+Kya aapka pichla order theek chal raha hai? Kya aapko abhi koi naya order chahiye?
+
+Hamare paas aapke liye kuch naye design aur special offer uplabdh hain. 🎁
+
+Kripya hamen reply karein ya WhatsApp par sampark karein.${sign}`;
+    }
+
+    if (lang === 'mr') {
+        return `Hello ${name} ji,
+
+${shop ? `Tumchya "${shop}" dukanasathi ` : ''}aamchyakadun ek mahatvachi mahiti aahe.
+
+Aamhi pahile ki tumhi shevatchi order baryach velapurvi dili hoti, pan aata barach vel jhala aahe.
+
+Tumchi magil order vyavasthit chalu aahe ka? Tumhala aata navin order havi aahe ka?
+
+Aamchyakade tumchya sathi kahi navin design ani khas offer uplabdh ahet. 🎁
+
+Krupya aamhala reply kara kinva WhatsApp var sampark kara.${sign}`;
+    }
+    return '';
+}
+
+function selectLang(lang) {
+    selectedLang = lang;
+    document.getElementById('langHi').classList.toggle('selected', lang === 'hi');
+    document.getElementById('langMr').classList.toggle('selected', lang === 'mr');
+
+    const c = customers.find(x => x.id === reminderCustomerId);
+    if (!c) return;
+
+    const msg = getReminderMessage(lang, c);
+    document.getElementById('langPreviewText').textContent = msg;
+    document.getElementById('langPreview').style.display = 'block';
+    document.getElementById('langSendBtn').disabled = false;
+}
+
+function sendReminderWA() {
+    if (!reminderCustomerId || !selectedLang) return;
+    const c = customers.find(x => x.id === reminderCustomerId);
+    if (!c) { showToast('Customer nahi mila', false); return; }
+
+    const phone = phoneClean(c.phone);
+    if (!phone) { showToast('Phone number nahi hai', false); return; }
+    const wa = phone.length === 10 ? '91' + phone : phone;
+
+    const msg = getReminderMessage(selectedLang, c);
+    const url = `https://wa.me/${wa}?text=${encodeURIComponent(msg)}`;
+
+    window.open(url, '_blank');
+    closeLangModal();
+    closeDetail();
+    showToast('WhatsApp khul raha hai...');
+}
+
+function askConfirm(title, msg, cb) {
+    document.getElementById('confirmTitle').textContent = title;
+    document.getElementById('confirmMsg').textContent = msg;
+    confirmCallback = cb;
+    document.getElementById('confirmOverlay').classList.add('active');
+}
+function closeConfirm() {
+    document.getElementById('confirmOverlay').classList.remove('active');
+    confirmCallback = null;
+}
+document.getElementById('confirmBtn').onclick = () => {
+    if (confirmCallback) confirmCallback();
+    closeConfirm();
+};
+
+function openBackupMenu() {
+    document.getElementById('backupOverlay').classList.add('active');
+    document.getElementById('backupSheet').classList.add('active');
+}
+function closeBackupMenu() {
+    document.getElementById('backupOverlay').classList.remove('active');
+    document.getElementById('backupSheet').classList.remove('active');
+}
+
+function exportToExcel() {
+    if (customers.length === 0) { showToast('Koi data nahi hai', false); return; }
+
+    const headers = ['S.No', 'Customer Name', 'Shop Name', 'Phone', 'City', 'Category', 'Order Source', 'Status', 'Last Order Date', 'Days Since'];
+    let tableHtml = `
+        <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
+        <head><meta charset="UTF-8">
+            <style>
+                table { border-collapse: collapse; font-family: Calibri, Arial, sans-serif; }
+                th { background: #1e3c72; color: white; padding: 10px; border: 1px solid #15315e; font-weight: bold; text-align: left; }
+                td { padding: 8px; border: 1px solid #d0d0d0; }
+                tr:nth-child(even) td { background: #f5f8fc; }
+                .header { font-size: 18px; font-weight: bold; color: #1e3c72; padding: 15px 0; }
+                .subheader { font-size: 12px; color: #6b7f99; padding-bottom: 10px; }
+            </style>
+        </head>
+        <body>
+            <div class="header">Sameer Bags CRM — Customer Data</div>
+            <div class="subheader">Exported: ${new Date().toLocaleString('en-IN')} | Total: ${customers.length} customers</div>
+            <table>
+                <thead><tr>${headers.map(h => `<th>${h}</th>`).join('')}</tr></thead>
+                <tbody>
+    `;
+
+    customers.forEach((c, i) => {
+        const cat = getCategoryInfo(c.category).name;
+        const src = getSourceInfo(c.source).name;
+        const days = daysSince(c.lastOrderDate);
+        tableHtml += `
+            <tr>
+                <td>${i + 1}</td>
+                <td>${escapeHtml(c.name || '')}</td>
+                <td>${escapeHtml(c.shop || '')}</td>
+                <td>${escapeHtml(c.phone || '')}</td>
+                <td>${escapeHtml(c.city || '')}</td>
+                <td>${escapeHtml(cat)}</td>
+                <td>${escapeHtml(src)}</td>
+                <td>${escapeHtml(c.status || '')}</td>
+                <td>${formatDate(c.lastOrderDate)}</td>
+                <td>${days !== null ? days : ''}</td>
+            </tr>
+        `;
+    });
+
+    tableHtml += `</tbody></table></body></html>`;
+
+    const blob = new Blob(['\ufeff', tableHtml], { type: 'application/vnd.ms-excel;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const date = new Date().toISOString().slice(0, 10);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `sameer-bags-customers-${date}.xls`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('Excel file download ho gayi!');
+}
+
+function downloadBackup() {
+    if (customers.length === 0) { showToast('Koi data nahi hai', false); return; }
+    const backup = {
+        app: 'Sameer Bags CRM',
+        version: 8,
+        exportedAt: new Date().toISOString(),
+        totalCustomers: customers.length,
+        categories: CATEGORIES,
+        sources: SOURCES,
+        customers: customers
+    };
+    const json = JSON.stringify(backup, null, 2);
+    const blob = new Blob([json], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const date = new Date().toISOString().slice(0, 10);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `sameer-bags-backup-${date}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('Backup download ho gaya!');
+}
+
+function restoreFromFile(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        try {
+            const data = JSON.parse(e.target.result);
+            let restored = [];
+            if (Array.isArray(data)) restored = data;
+            else if (data && Array.isArray(data.customers)) restored = data.customers;
+            else if (data && Array.isArray(data.data)) restored = data.data;
+            else throw new Error('Invalid format');
+
+            if (restored.length === 0) { showToast('Backup file khali hai', false); return; }
+
+            restored.forEach((c, i) => {
+                if (!c.id) c.id = Date.now() + i;
+                if (!c.source) c.source = 'offline';
+                if (!c.city) c.city = 'Unknown';
+                if (!c.lastOrderDate) c.lastOrderDate = new Date().toISOString().slice(0, 10);
+            });
+
+            askConfirm('Restore Backup?',
+                `${restored.length} customers milenge. Purana data replace ho jayega.`,
+                () => {
+                    customers = restored;
+                    autoUpdateStatuses();
+                    saveData();
+                    renderAll();
+                    closeBackupMenu();
+                    showToast(`${restored.length} customers restore ho gaye!`);
+                });
+        } catch (err) { showToast('File galat hai!', false); }
+        event.target.value = '';
+    };
+    reader.readAsText(file);
+}
+
+async function copyToClipboard() {
+    if (customers.length === 0) { showToast('Koi data nahi hai', false); return; }
+    const json = JSON.stringify({ app: 'Sameer Bags CRM', exportedAt: new Date().toISOString(), customers }, null, 2);
+    try {
+        await navigator.clipboard.writeText(json);
+        showToast('Clipboard me copy ho gaya!');
+    } catch (e) {
+        const ta = document.createElement('textarea');
+        ta.value = json;
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); showToast('Clipboard me copy ho gaya!'); }
+        catch (err) { showToast('Copy nahi ho paya', false); }
+        document.body.removeChild(ta);
+    }
+}
+
+function clearAllData() {
+    if (customers.length === 0) { showToast('Koi data nahi hai', false); return; }
+    askConfirm('Sab Delete Karein?',
+        `${customers.length} customers ka pura data delete ho jayega. Ye wapas nahi aayega!`,
+        () => {
+            customers = [];
+            saveData();
+            renderAll();
+            closeBackupMenu();
+            showToast('Sab data delete ho gaya');
+        });
+}
+
+let toastTimer = null;
+function showToast(msg, success = true) {
+    const toast = document.getElementById('toast');
+    const icon = toast.querySelector('i');
+    document.getElementById('toastMsg').textContent = msg;
+    toast.classList.remove('success', 'error');
+    toast.classList.add(success ? 'success' : 'error');
+    icon.className = success ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 2500);
+}
+
+document.getElementById('searchInput').addEventListener('input', (e) => {
+    searchTerm = e.target.value;
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => {
+        renderListAll(); renderListOnline(); renderListOffline();
+    }, 200);
+});
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeForm(); closeDetail(); closeBackupMenu(); closeConfirm(); closeLangModal();
+    }
+});
+
+document.getElementById('langModal').addEventListener('click', (e) => {
+    if (e.target.id === 'langModal') closeLangModal();
+});
+
+(function init() {
+    loadData();
+    renderAll();
+})();
+</script>
+</body>
+</html>
